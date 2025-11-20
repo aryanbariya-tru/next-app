@@ -9,9 +9,14 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
+# importing env varibles 
+ARG DATABASE_URL
+ARG MONGODB_URI
+
+ENV DATABASE_URL=$DATABASE_URL
+ENV MONGODB_URI=$MONGODB_URI
+
 # IMPORTANT: Generate Prisma Client
-ENV DATABASE_URL="file:./dev.db"
-ENV MONGODB_URI="placeholder"
 RUN npx prisma generate
 RUN npm run build
 
