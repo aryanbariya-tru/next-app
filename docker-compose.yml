@@ -15,24 +15,25 @@ services:
     container_name: mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: Aryan@1234
-      MYSQL_DATABASE: mydb
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     ports:
       - "3307:3306"
     volumes:
       - mysql-data:/var/lib/mysql
 
   next-app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DATABASE_URL: ${DATABASE_URL}
+        MONGODB_URI: ${MONGODB_URI}
     container_name: next-app
     ports:
       - "3000:3000"
     env_file:
       - .env
-    environment:
-      NODE_ENV: production
-      MONGODB_URI: mongodb://mongo:27017/school
-      DATABASE_URL: "mysql://root:Aryan%401234@mysql:3306/mydb"
     depends_on:
       - mongo
       - mysql
