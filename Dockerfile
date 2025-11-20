@@ -11,6 +11,7 @@ COPY . .
 COPY --from=deps /app/node_modules ./node_modules
 # IMPORTANT: Generate Prisma Client
 ENV DATABASE_URL="file:./dev.db"
+ENV MONGODB_URI="placeholder"
 RUN npx prisma generate
 RUN npm run build
 
