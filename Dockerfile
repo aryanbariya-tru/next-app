@@ -31,4 +31,5 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
 
 EXPOSE 3000
-CMD npx prisma migrate deploy && node server.js
+CMD ["node", "server.js"]
+
