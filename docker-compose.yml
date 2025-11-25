@@ -12,6 +12,11 @@ services:
 
   mysql:
     image: mysql:8
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     container_name: mysql
     restart: always
     environment:
@@ -36,7 +41,8 @@ services:
       - .env
     depends_on:
       - mongo
-      - mysql
+      - mysql:
+        condition: service_healthy
 
 volumes:
   mongo-data:

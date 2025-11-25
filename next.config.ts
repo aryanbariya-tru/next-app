@@ -17,7 +17,7 @@ const withPWA = withPWAInit({
         cacheName: "school-page",
         expiration: {
           maxEntries: 10,
-          maxAgeSeconds: 24 * 60 * 60, 
+          maxAgeSeconds: 24 * 60 * 60,
         },
       },
     },
@@ -37,6 +37,7 @@ const withPWA = withPWAInit({
 
 const nextConfig: NextConfig = {
   turbopack: {},
+  output: "standalone",
   images: {
     remotePatterns: [
       {
