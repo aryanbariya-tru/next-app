@@ -5,27 +5,26 @@ services:
     image: mongo:6
     container_name: mongo
     restart: always
-    ports:
-      - "27018:27017"
     volumes:
       - mongo-data:/data/db
+  
 
   mysql:
     image: mysql:8
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
     container_name: mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-    ports:
-      - "3307:3306"
+    command: --default-authentication-plugin=mysql_native_password
     volumes:
       - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -p${MYSQL_ROOT_PASSWORD} || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
 
   next-app:
     build:
@@ -35,14 +34,17 @@ services:
         DATABASE_URL: ${DATABASE_URL}
         MONGODB_URI: ${MONGODB_URI}
     container_name: next-app
+    restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "3000:3000"    
     env_file:
       - .env
     depends_on:
-      - mongo
-      - mysql:
+      mysql:
         condition: service_healthy
+      mongo:
+        condition: service_started
+
 
 volumes:
   mongo-data:
