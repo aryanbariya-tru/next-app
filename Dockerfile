@@ -10,6 +10,12 @@ WORKDIR /app
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
 
+# Build-time environment variables
+ARG DATABASE_URL
+ARG MONGODB_URI
+ENV DATABASE_URL=$DATABASE_URL
+ENV MONGODB_URI=$MONGODB_URI
+
 RUN npx prisma generate
 RUN npm run build
 
