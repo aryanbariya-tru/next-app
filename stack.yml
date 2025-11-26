@@ -5,6 +5,7 @@ services:
     image: aryanbariya/next-app:latest
     deploy:
       replicas: 2
+      end-point_mode: dnsrr
       restart_policy:
         condition: on-failure
       update_config:
