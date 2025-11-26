@@ -13,10 +13,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      MONGODB_URI: "mongodb://next-app_mongo:27017/school"
-    depends_on:
-      - mysql
-      - mongo
+      MONGODB_URI: "mongodb://mongo:27017/school"
     networks:
       - next-network
 
@@ -30,7 +27,6 @@ services:
       - mongo-data:/data/db
     networks:
       - next-network
-
 
 volumes:
   mongo-data:
