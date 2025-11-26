@@ -23,11 +23,14 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV MONGODB_URI=$MONGODB_URI 
+ENV PORT=3000
+ENV HOST=0.0.0.0
 
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
 
 EXPOSE 3000
-CMD ["node", "server.js", "-H", "0.0.0.0"]
 
+# Run the standalone Next.js server binding to 0.0.0.0
+CMD ["node", "server.js"]
