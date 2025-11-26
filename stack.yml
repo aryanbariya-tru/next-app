@@ -10,8 +10,6 @@ services:
       update_config:
         parallelism: 1
         delay: 10s
-    ports:
-      - "3000:3000"
     environment:
       MONGODB_URI: "mongodb://mongo:27017/school"
     networks:
