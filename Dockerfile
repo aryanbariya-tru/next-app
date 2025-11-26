@@ -11,12 +11,10 @@ COPY . .
 COPY --from=deps /app/node_modules ./node_modules
 
 # Build-time environment variables
-ARG DATABASE_URL
 ARG MONGODB_URI
-ENV DATABASE_URL=$DATABASE_URL
 ENV MONGODB_URI=$MONGODB_URI
 
-RUN npx prisma generate
+# Run build
 RUN npm run build
 
 # Step 3 - Production runtime
@@ -24,12 +22,11 @@ FROM node:20-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
+ENV MONGODB_URI=$MONGODB_URI 
 
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/prisma ./prisma
 
 EXPOSE 3000
 CMD ["node", "server.js"]
-

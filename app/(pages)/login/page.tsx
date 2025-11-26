@@ -14,23 +14,23 @@ const LoginPage = () => {
     e.preventDefault();
     setMessage("Login...");
 
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
+    // const res = await fetch("/api/auth/login", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify(formData),
+    // });
 
-    const data = await res.json();
+    // const data = await res.json();
 
-    if (res.ok) {
-      setMessage("✅ Login Sucessfull!");
+    // if (res.ok) {
+    //   setMessage("✅ Login Sucessfull!");
 
-      localStorage.setItem("user", JSON.stringify(data.user));
-      router.push("/dashboard");
-      setFormData({ name: "", email: "", password:"" });
-    } else {
-      setMessage(`❌ ${data.error || "Something went wrong"}`);
-    }
+    //   localStorage.setItem("user", JSON.stringify(data.user));
+    //   router.push("/dashboard");
+    //   setFormData({ name: "", email: "", password:"" });
+    // } else {
+    //   setMessage(`❌ ${data.error || "Something went wrong"}`);
+    // }
   };
 
   return (

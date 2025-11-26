@@ -14,34 +14,34 @@ const DashBoard: React.FC = () => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [message, setMessage] = useState("");
 
-  const fetchUsers = async () => {
-    try {
-      const storedUser = localStorage.getItem("user");
-      const loggedUser = storedUser ? JSON.parse(storedUser) : null;
+  // const fetchUsers = async () => {
+  //   try {
+  //     const storedUser = localStorage.getItem("user");
+  //     const loggedUser = storedUser ? JSON.parse(storedUser) : null;
 
-      const res = await fetch("/api/auth/create", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "logged-email": loggedUser?.email || "",
-          "logged-role": loggedUser?.role || "",
-        },
-      });
+  //     const res = await fetch("/api/auth/create", {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         "logged-email": loggedUser?.email || "",
+  //         "logged-role": loggedUser?.role || "",
+  //       },
+  //     });
 
-      if (!res.ok) {
-        return console.log("No-one is logged-in");
-      }
+  //     if (!res.ok) {
+  //       return console.log("No-one is logged-in");
+  //     }
 
-      const data: IUser[] = await res.json();
-      setUsers(data);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
-  };
+  //     const data: IUser[] = await res.json();
+  //     setUsers(data);
+  //   } catch (error) {
+  //     console.error("Error fetching users:", error);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  // useEffect(() => {
+  //   fetchUsers();
+  // }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -51,36 +51,36 @@ const DashBoard: React.FC = () => {
     e.preventDefault();
     setMessage("Registering...");
 
-    const storedUser = localStorage.getItem("user");
-    const loggedUser = storedUser ? JSON.parse(storedUser) : null;
+    // const storedUser = localStorage.getItem("user");
+    // const loggedUser = storedUser ? JSON.parse(storedUser) : null;
 
-    if (!loggedUser?.email) {
-      setMessage("❌ No logged-in user found!");
-      return;
-    }
+    // if (!loggedUser?.email) {
+    //   setMessage("❌ No logged-in user found!");
+    //   return;
+    // }
 
-    const payload: ICreateUserPayload = { ...formData, createdBy: loggedUser.email };
+    // const payload: ICreateUserPayload = { ...formData, createdBy: loggedUser.email };
 
-    const res = await fetch("/api/auth/create", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    // const res = await fetch("/api/auth/create", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify(payload),
+    // });
 
-    const data = await res.json();
+    // const data = await res.json();
 
-    if (res.ok) {
-      setMessage("✅ Registration successful!");
-      setFormData({ name: "", email: "", role: "student", createdBy: "" });
-      fetchUsers();
-    } else {
-      setMessage(`❌ ${data.error || "Something went wrong"}`);
-    }
+    // if (res.ok) {
+    //   setMessage("✅ Registration successful!");
+    //   setFormData({ name: "", email: "", role: "student", createdBy: "" });
+    //   fetchUsers();
+    // } else {
+    //   setMessage(`❌ ${data.error || "Something went wrong"}`);
+    // }
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    fetchUsers();
+    // localStorage.removeItem("user");
+    // fetchUsers();
   };
 
   return (

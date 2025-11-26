@@ -13,7 +13,6 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: "mysql://root:Aryan%401234@next-app_mysql:3306/mydb"
       MONGODB_URI: "mongodb://next-app_mongo:27017/school"
     depends_on:
       - mysql
@@ -32,23 +31,9 @@ services:
     networks:
       - next-network
 
-  mysql:
-    image: mysql:8
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
-    environment:
-      MYSQL_ROOT_PASSWORD: "Aryan@1234"
-      MYSQL_DATABASE: "mydb"
-    volumes:
-      - mysql-data:/var/lib/mysql
-    networks:
-      - next-network
 
 volumes:
   mongo-data:
-  mysql-data:
 
 networks:
   next-network:
