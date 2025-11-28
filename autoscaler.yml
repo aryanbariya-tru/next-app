@@ -4,8 +4,14 @@ services:
   autoscaler:
     image: jcwimer/docker-swarm-autoscaler
     environment:
-      - PROMETHEUS_URL=http://monitoring_prometheus :9090
+      - PROMETHEUS_URL=http://monitoring_prometheus:9090
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - next-network
     deploy:
       replicas: 1
+
+networks:
+  next-network:
+    external: true
