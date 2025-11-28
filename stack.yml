@@ -3,6 +3,11 @@ version: "3.9"
 services:
   next-app:
     image: aryanbariya/next-app:latest
+    labels:
+       - "swarm.autoscaler=true"
+       - "swarm.autoscaler.cpu=1"
+       - "swarm.autoscaler.min=2"
+       - "swarm.autoscaler.max=8"
     deploy:
       replicas: 2
       restart_policy:
@@ -29,7 +34,11 @@ services:
   haproxy:
     image: haproxy:latest
     ports:
-      - "8085:80"
+    - target: 80
+      published: 8085
+      protocol: tcp
+      mode: host
+
     volumes:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     networks:
