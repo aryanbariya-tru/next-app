@@ -5,24 +5,17 @@ CPU_PERCENTAGE_LOWER_LIMIT=5
 PROMETHEUS_URL=${PROMETHEUS_URL:-"http://prometheus:9090"}
 SLEEP_INTERVAL=5
 
-# Helper: get service name from container ID
-get_service_name() {
-  container_id=$1
-  docker ps --format '{{.ID}} {{.Names}}' | grep "^$container_id " | awk '{print $2}' | cut -d'_' -f1
-}
+PROMETHEUS_QUERY="sum(rate(container_cpu_usage_seconds_total{container_label_com_docker_swarm_service_name!=\"\"}[1m])) by (container_label_com_docker_swarm_service_name)"
 
 while true; do
-  # Query CPU usage from Prometheus
-  results=$(curl -s "${PROMETHEUS_URL}/api/v1/query?query=sum(rate(container_cpu_usage_seconds_total[1m])) by (id)" | jq -r '.data.result[] | "\(.metric.id) \(.value[1])"')
+  results=$(curl -s "${PROMETHEUS_URL}/api/v1/query?query=${PROMETHEUS_QUERY}" | jq -r '.data.result[] | "\(.metric.container_label_com_docker_swarm_service_name) \(.value[1])"')
 
   for line in $results; do
-    container_id=$(echo $line | awk '{print $1}' | sed 's|/docker/||')
+    service=$(echo $line | awk '{print $1}')
     cpu=$(echo $line | awk '{print $2}')
-    service=$(get_service_name $container_id)
 
-    if [ -z "$service" ]; then
-      continue
-    fi
+    [ -z "$service" ] && continue
+    [ -z "$cpu" ] && continue
 
     current_replicas=$(docker service inspect $service | jq '.[].Spec.Mode.Replicated.Replicas')
     replica_max=$(docker service inspect $service | jq -r '.[].Spec.Labels["swarm.autoscaler.maximum"]')
@@ -31,14 +24,14 @@ while true; do
     # SCALE UP
     if [ "$(echo "$cpu > $CPU_PERCENTAGE_UPPER_LIMIT" | bc)" -eq 1 ] && [ "$current_replicas" -lt "$replica_max" ]; then
       new_replicas=$((current_replicas+1))
-      echo "Scaling UP $service to $new_replicas"
+      echo "Scaling UP $service → $new_replicas"
       docker service scale $service=$new_replicas
     fi
 
     # SCALE DOWN
     if [ "$(echo "$cpu < $CPU_PERCENTAGE_LOWER_LIMIT" | bc)" -eq 1 ] && [ "$current_replicas" -gt "$replica_min" ]; then
       new_replicas=$((current_replicas-1))
-      echo "Scaling DOWN $service to $new_replicas"
+      echo "Scaling DOWN $service → $new_replicas"
       docker service scale $service=$new_replicas
     fi
 
