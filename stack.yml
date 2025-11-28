@@ -4,10 +4,9 @@ services:
   next-app:
     image: aryanbariya/next-app:latest
     labels:
-       - "swarm.autoscaler=true"
-       - "swarm.autoscaler.cpu=1"
-       - "swarm.autoscaler.min=2"
-       - "swarm.autoscaler.max=8"
+         - "swarm.autoscaler=true"
+         - "swarm.autoscaler.minmum=2"
+         - "swarm.autoscaler.maxmum=8"
     deploy:
       replicas: 2
       restart_policy:
