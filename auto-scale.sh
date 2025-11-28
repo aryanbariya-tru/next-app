@@ -4,7 +4,7 @@
 # Configurable environment variables
 # ===========================
 LOOP=${LOOP:-"yes"}
-PROMETHEUS_URL=${PROMETHEUS_URL:-"http://prometheus:9090"}
+PROMETHEUS_URL=${PROMETHEUS_URL:-"http://monitoring_prometheus:9090"}
 CPU_PERCENTAGE_UPPER_LIMIT=${CPU_PERCENTAGE_UPPER_LIMIT:-10}
 CPU_PERCENTAGE_LOWER_LIMIT=${CPU_PERCENTAGE_LOWER_LIMIT:-5}
 SLEEP_INTERVAL=${SLEEP_INTERVAL:-60}  # seconds

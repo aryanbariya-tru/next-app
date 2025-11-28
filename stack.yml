@@ -49,7 +49,7 @@ services:
   autoscaler:
     image: aryanbariya/my-autoscaler:latest  # your custom autoscaler image
     environment:
-      - PROMETHEUS_URL=http://prometheus:9090
+      - PROMETHEUS_URL=http://monitoring_prometheus:9090
       - CPU_PERCENTAGE_UPPER_LIMIT=10
       - CPU_PERCENTAGE_LOWER_LIMIT=5
       - SLEEP_INTERVAL=60
