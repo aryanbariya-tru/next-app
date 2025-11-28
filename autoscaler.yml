@@ -2,12 +2,11 @@ version: "3.9"
 
 services:
   autoscaler:
-    image: jcwimer/docker-swarm-autoscaler
+    image: aryanbariya/my-autoscaler:latest   # your custom autoscaler image
     environment:
       - PROMETHEUS_URL=http://monitoring_prometheus:9090
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./auto-scale.sh:/auto-scale.sh
     networks:
       - next-network
     deploy:

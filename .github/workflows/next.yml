@@ -1,4 +1,4 @@
-name: Next app
+name: Build and Push Images
 
 on:
   push:
@@ -20,15 +20,29 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Build Docker image with env secrets
-      - name: Build Docker image
+      # -----------------------
+      # Build Next.js App Image
+      # -----------------------
+      - name: Build next-app image
         run: |
           docker build \
             --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} \
             --build-arg MONGODB_URI=${{ secrets.MONGODB_URI }} \
             -t ${{ secrets.IMAGE_NAME }}:latest .
 
-      # Push image to Docker Hub
-      - name: Push Docker image
+      - name: Push next-app image
         run: |
           docker push ${{ secrets.IMAGE_NAME }}:latest
+
+      # -----------------------
+      # Build Autoscaler Image
+      # -----------------------
+      - name: Build autoscaler image
+        run: |
+          docker build \
+            -f autoscaler.Dockerfile \
+            -t ${{ secrets.DOCKER_USERNAME }}/my-autoscaler:latest .
+
+      - name: Push autoscaler image
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/my-autoscaler:latest
