@@ -1,4 +1,4 @@
-CPU_PERCENTAGE_UPPER_LIMIT=15
+CPU_PERCENTAGE_UPPER_LIMIT=10
 CPU_PERCENTAGE_LOWER_LIMIT=5
 PROMETHEUS_API="api/v1/query?query="
 PROMETHEUS_QUERY="sum(rate(container_cpu_usage_seconds_total%7Bcontainer_label_com_docker_swarm_task_name%3D~%27.%2B%27%7D%5B5m%5D))BY(container_label_com_docker_swarm_service_name%2Cinstance)*100"
