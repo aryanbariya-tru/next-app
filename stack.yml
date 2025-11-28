@@ -4,9 +4,9 @@ services:
   next-app:
     image: aryanbariya/next-app:latest
     labels:
-       swarm.autoscaler: "true"
-       swarm.autoscaler.minimum: "2"
-       swarm.autoscaler.maximum: "8"
+      swarm.autoscaler: "true"
+      swarm.autoscaler.minimum: "2"
+      swarm.autoscaler.maximum: "8"
     deploy:
       replicas: 2
       restart_policy:
@@ -46,6 +46,7 @@ services:
       replicas: 1
       restart_policy:
         condition: on-failure
+
   autoscaler:
     image: aryanbariya/my-autoscaler:latest  # your custom autoscaler image
     environment:
@@ -67,4 +68,5 @@ volumes:
 
 networks:
   next-network:
-    driver: overlay
+    external: true
+
