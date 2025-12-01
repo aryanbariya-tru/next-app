@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { combine, devtools } from "zustand/middleware";
 import { DataItem, DataStore, DataActions } from "@/app/types/dataStore";
+import { v4 as uuidv4 } from 'uuid';
 import {
   saveData,
   addChange,
@@ -35,7 +36,7 @@ export const useDataStore = create<DataStore & DataActions>()(
         },
 
         addData: async (item: Omit<DataItem, "_id">) => {
-          const tempId = crypto.randomUUID();
+          const tempId = uuidv4();
           const newItem: DataItem = { _id: tempId, ...item };
 
           set((state) => ({

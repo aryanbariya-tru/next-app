@@ -3,11 +3,11 @@ version: "3.9"
 services:
   next-app:
     image: aryanbariya/next-app:latest
-    labels:
-      swarm.autoscaler: "true"
-      swarm.autoscaler.minimum: "2"
-      swarm.autoscaler.maximum: "8"
     deploy:
+      labels:
+        swarm.autoscaler: "true"
+        swarm.autoscaler.minimum: "2"
+        swarm.autoscaler.maximum: "8"
       replicas: 2
       restart_policy:
         condition: on-failure
