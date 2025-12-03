@@ -22,7 +22,7 @@ spec:
           env:
             - name: MONGODB_URI
               value: "mongodb://mongo-service:27017/school"
-              
+
           resources:
             requests:
               cpu: 100m
@@ -54,4 +54,4 @@ spec:
     - name: http
       port: 3000
       targetPort: 3000
-  type: NodePort
+  type: ClusterIP
